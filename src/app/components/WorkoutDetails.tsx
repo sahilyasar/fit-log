@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Oswald } from "next/font/google";
 import type { Workout } from "../type/workout";
 import { useWorkout } from "../context/WorkoutContext";
+import { toast } from "react-toastify";
 
 
 const oswald = Oswald({
@@ -28,7 +29,29 @@ const WorkoutDetails = ({
     workout,
 }: WorkoutDetailsProps) => {
 
-    const { addToPlan, saveWorkout } = useWorkout();
+    const { plan, saved, addToPlan, saveWorkout } = useWorkout();
+
+    const handleAddToPlan = () => {
+        if (plan.some((item) => item.id === workout.id)) {
+            toast.info("This workout is already in today's plan.");
+            return;
+        }
+        if (plan.length >= 5) {
+            toast.warning("Today's plan is full. Finish a workout before adding more.");
+            return;
+        }
+        addToPlan(workout);
+        toast.success(`${workout.name} added to today's plan`);
+    };
+
+    const handleSaveWorkout = () => {
+        if (saved.some((item) => item.id === workout.id)) {
+            toast.info("This workout is already saved.");
+            return;
+        }
+        saveWorkout(workout);
+        toast.success(`${workout.name} saved for later`);
+    };
 
     return (
         <section className="min-h-screen bg-[#0f1115] px-6 py-12">
@@ -157,14 +180,14 @@ const WorkoutDetails = ({
                     {/* Buttons */}
                     <div className="mt-8 flex flex-wrap gap-4">
                     <button
-                        onClick={() => addToPlan(workout)}
+                        onClick={handleAddToPlan}
                         className="btn border-none bg-lime-400 text-black"
                     >
                         + Add to today&apos;s plan
                     </button>
 
                     <button
-                        onClick={() => saveWorkout(workout)}
+                        onClick={handleSaveWorkout}
                         className="btn btn-outline text-white"
                     >
                         Save for later

@@ -1,6 +1,8 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import type { Workout } from "../type/workout";
 
 type WorkoutContextType = {
@@ -83,6 +85,7 @@ export function WorkoutProvider({
             }}
         >
             {children}
+            <ToastContainer position="top-right" autoClose={3000} theme="dark" />
         </WorkoutContext.Provider>
     );
 }
