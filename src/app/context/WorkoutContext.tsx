@@ -8,6 +8,9 @@ type WorkoutContextType = {
     saved: Workout[];
     addToPlan: (workout: Workout) => void;
     saveWorkout: (workout: Workout) => void;
+
+    removeFromPlan: (id: number) => void;
+    removeFromSaved: (id: number) => void;
 };
 
 const WorkoutContext = createContext<WorkoutContextType | null>(null);
@@ -52,6 +55,22 @@ export function WorkoutProvider({
         });
     };
 
+    const removeFromPlan = (id: number) => {
+        setPlan((currentPlan) =>
+            currentPlan.filter(
+                (workout) => workout.id !== id
+            )
+        );
+    };
+
+    const removeFromSaved = (id: number) => {
+        setSaved((currentSaved) =>
+            currentSaved.filter(
+                (workout) => workout.id !== id
+            )
+        );
+    };
+
     return (
         <WorkoutContext.Provider
             value={{
@@ -59,6 +78,8 @@ export function WorkoutProvider({
                 saved,
                 addToPlan,
                 saveWorkout,
+                removeFromPlan,
+                removeFromSaved,
             }}
         >
             {children}

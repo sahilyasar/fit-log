@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Link from "next/link";
-import Image from "next/image";
 import { Oswald } from "next/font/google";
 import { useWorkout } from "../context/WorkoutContext";
-import WorkoutCard from "../components/WorkoutCard";
+
+import MyPlanCard from "../components/MyPlanCard";
 
 const oswald = Oswald({
     subsets: ["latin"],
@@ -13,7 +15,7 @@ const oswald = Oswald({
 });
 
 export default function MyPlanPage() {
-    const { plan, saved } = useWorkout();
+    const { plan, saved, removeFromPlan, removeFromSaved } = useWorkout();
 
     const [activeTab, setActiveTab] = useState("plan");
     const [sortBy, setSortBy] = useState("duration");
@@ -36,6 +38,7 @@ export default function MyPlanPage() {
 
     return (
         <>
+        <ToastContainer position="top-right" autoClose={3000} theme="dark" />
         <section className="bg-[#0f1115] px-6 py-10">
 
             <div className="mx-auto max-w-7xl">
@@ -139,11 +142,21 @@ export default function MyPlanPage() {
                         </Link>
                     </div>
                 ) : (
-                  <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  <div className="mt-6 flex flex-col gap-4">
                     {workouts.map((workout) => (
-                            <WorkoutCard
+                            <MyPlanCard
                                 key={workout.id}
                                 workout={workout}
+                                showDoneButton={activeTab === "plan"}
+                                onDone={() => removeFromPlan(workout.id)}
+                                onRemove={() => {
+                                    if (activeTab === "plan") {
+                                        removeFromPlan(workout.id);
+                                    } else {
+                                        removeFromSaved(workout.id);
+                                    }
+                                    toast.success(`${workout.name} removed`);
+                                }}
                             />
                         ))}
 
