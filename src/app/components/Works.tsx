@@ -5,7 +5,12 @@ import type { Workout } from "../type/workout";
 const oswald = Oswald({ subsets: ["latin"], weight: ["700"] });
 
 export default async function Works() {
-  const response = await fetch("https://api.abcz.workers.dev/api/fitlog");
+  const response = await fetch("https://api.abcz.workers.dev/api/fitlog", {
+    cache: "no-store",
+  });
+  if (!response.ok) {
+    throw new Error("Unable to fetch workouts");
+  }
   const workouts: Workout[] = await response.json();
 
   return (

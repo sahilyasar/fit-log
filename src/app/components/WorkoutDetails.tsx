@@ -33,7 +33,7 @@ const WorkoutDetails = ({
 
     const handleAddToPlan = () => {
         if (plan.some((item) => item.id === workout.id)) {
-            toast.info("This workout is already in today's plan.");
+            toast.info(`${workout.name} is already in today's plan.`);
             return;
         }
         if (plan.length >= 5) {
@@ -41,16 +41,16 @@ const WorkoutDetails = ({
             return;
         }
         addToPlan(workout);
-        toast.success(`${workout.name} added to today's plan`);
+        toast.success(`${workout.name} added to today's plan.`);
     };
 
     const handleSaveWorkout = () => {
         if (saved.some((item) => item.id === workout.id)) {
-            toast.info("This workout is already saved.");
+            toast.info(`${workout.name} is already saved.`);
             return;
         }
         saveWorkout(workout);
-        toast.success(`${workout.name} saved for later`);
+        toast.success(`${workout.name} saved for later.`);
     };
 
     return (
