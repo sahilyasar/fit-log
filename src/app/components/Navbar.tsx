@@ -3,8 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { useWorkout } from "../context/WorkoutContext";
 
 const Navbar = () => {
+    const { plan, saved } = useWorkout();
+    
     const pathname = usePathname();
 
     const workoutActive =
@@ -65,7 +68,7 @@ const Navbar = () => {
                         Plan
 
                         <span className="rounded-full bg-lime-400 px-2 py-1 text-xs font-bold text-black">
-                            0
+                            {plan.length}
                         </span>
                     </Link>
 
@@ -76,7 +79,7 @@ const Navbar = () => {
                         Saved
 
                         <span className="rounded-full border border-gray-600 px-2 py-1 text-xs">
-                            0
+                            {saved.length}
                         </span>
                     </Link>
 
